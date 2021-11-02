@@ -22,3 +22,11 @@ html {
   width: 40px;
   height: 40px;
 }
+
+div.selected {
+  background-color: aquamarine;
+}
+
+div.bomb {
+  background-color: gray;
+}
