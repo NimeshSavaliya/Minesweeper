@@ -9,8 +9,9 @@ html {
 .grid {
   margin: auto;
   margin-top: 10em;
-  width: 445px;
-  height: 445px;
+  padding: 10px;
+  width: 465px;
+  height: 465px;
   background-color: gainsboro;
   display: flex;
   flex-wrap: wrap;
