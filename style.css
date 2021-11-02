@@ -1,0 +1,24 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: beige;
+}
+
+.grid {
+  margin: auto;
+  margin-top: 10em;
+  width: 445px;
+  height: 445px;
+  background-color: gainsboro;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.grid div {
+  background-color: azure;
+  width: 40px;
+  height: 40px;
+}
