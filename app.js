@@ -5,8 +5,8 @@ let gameover = false;
 
 const grid = document.querySelector('.grid');
 
-const bombsArray = new Array(bombCount).fill('bomb');
-const emptyArray = new Array(width * width - bombCount).fill('valid');
+const bombsArray = Array(bombCount).fill('bomb');
+const emptyArray = Array(width * width - bombCount).fill('valid');
 const gameArray = emptyArray.concat(bombsArray);
 
 const shuffledArray = gameArray.sort(() => Math.random() - 0.5);
@@ -23,7 +23,7 @@ for (let i = 0; i < width * width; i++) {
   square.addEventListener('click', () => clicked(square));
 }
 
-for (let i = 0; i < width * width; i++) {
+for (let i = 0; i < squares.length; i++) {
   total = 0;
   const isLeftEdge = i % width === 0;
   const isRightEdge = i % width === width - 1;
@@ -64,13 +64,18 @@ for (let i = 0; i < width * width; i++) {
 }
 
 const clicked = (square) => {
+  //   let id = square.id;
   if (gameover) {
+    return;
+  }
+  if (
+    square.classList.contains('selected') ||
+    square.classList.contains('flag')
+  ) {
     return;
   }
   if (square.classList.contains('bomb')) {
     console.log('Game Over');
-    gameover = true;
-    return;
   } else {
     let total = square.getAttribute('data');
     if (total != 0) {
@@ -91,51 +96,59 @@ const checksquare = (square) => {
   setTimeout(() => {
     //upper left
     if (id > 11 && !leftEdge) {
-      const newId = squares[parseInt(id) - width - 1].id;
+      const newId = squares[parseInt(id) - 1 - width].id;
       const newSquare = document.getElementById(newId);
       clicked(newSquare);
+      console.log(newId);
     }
     // up
     if (id > 9) {
       const newId = squares[parseInt(id) - width].id;
       const newSquare = document.getElementById(newId);
       clicked(newSquare);
+      console.log('U');
     }
     // upper right
     if (id > 10 && !rightEdge) {
-      const newId = squares[parseInt(id) - width + 1].id;
+      const newId = squares[parseInt(id) + 1 - width].id;
       const newSquare = document.getElementById(newId);
       clicked(newSquare);
+      console.log('UR');
     }
     //right
     if (id < 98 && !rightEdge) {
       const newId = squares[parseInt(id) + 1].id;
       const newSquare = document.getElementById(newId);
       clicked(newSquare);
+      console.log('R');
     }
     // left
     if (id > 0 && !leftEdge) {
       const newId = squares[parseInt(id) - 1].id;
       const newSquare = document.getElementById(newId);
       clicked(newSquare);
+      console.log('L');
     }
     // lower left
     if (id < 90 && !leftEdge) {
-      const newId = squares[parseInt(id) + width - 1].id;
+      const newId = squares[parseInt(id) - 1 + width].id;
       const newSquare = document.getElementById(newId);
       clicked(newSquare);
+      console.log('LL');
     }
     // down
     if (id < 89) {
       const newId = squares[parseInt(id) + width].id;
       const newSquare = document.getElementById(newId);
       clicked(newSquare);
+      console.log('D');
     }
     // lower right
     if (id < 88 && !rightEdge) {
-      const newId = squares[parseInt(id) + width + 1].id;
+      const newId = squares[parseInt(id) + 1 + width].id;
       const newSquare = document.getElementById(newId);
       clicked(newSquare);
+      console.log('LR');
     }
   }, 10);
 };
