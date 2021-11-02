@@ -1,5 +1,6 @@
 const width = 10;
 const bombCount = 20;
+let flag = 20;
 const squares = [];
 let gameover = false;
 
@@ -21,6 +22,11 @@ for (let i = 0; i < width * width; i++) {
   squares.push(square);
 
   square.addEventListener('click', () => clicked(square));
+  //ctrl+click
+  square.oncontextmenu = function (e) {
+    e.preventDefault();
+    addFlag(square);
+  };
 }
 
 for (let i = 0; i < squares.length; i++) {
@@ -75,7 +81,7 @@ const clicked = (square) => {
     return;
   }
   if (square.classList.contains('bomb')) {
-    console.log('Game Over');
+    gameOver();
   } else {
     let total = square.getAttribute('data');
     if (total != 0) {
@@ -88,6 +94,7 @@ const clicked = (square) => {
   square.classList.add('selected');
 };
 
+// checking neighbors
 const checksquare = (square) => {
   const id = square.id;
   const leftEdge = id % width === 0;
@@ -99,56 +106,99 @@ const checksquare = (square) => {
       const newId = squares[parseInt(id) - 1 - width].id;
       const newSquare = document.getElementById(newId);
       clicked(newSquare);
-      console.log(newId);
     }
     // up
     if (id > 9) {
       const newId = squares[parseInt(id) - width].id;
       const newSquare = document.getElementById(newId);
       clicked(newSquare);
-      console.log('U');
     }
     // upper right
     if (id > 10 && !rightEdge) {
       const newId = squares[parseInt(id) + 1 - width].id;
       const newSquare = document.getElementById(newId);
       clicked(newSquare);
-      console.log('UR');
     }
     //right
     if (id < 98 && !rightEdge) {
       const newId = squares[parseInt(id) + 1].id;
       const newSquare = document.getElementById(newId);
       clicked(newSquare);
-      console.log('R');
     }
     // left
     if (id > 0 && !leftEdge) {
       const newId = squares[parseInt(id) - 1].id;
       const newSquare = document.getElementById(newId);
       clicked(newSquare);
-      console.log('L');
     }
     // lower left
     if (id < 90 && !leftEdge) {
       const newId = squares[parseInt(id) - 1 + width].id;
       const newSquare = document.getElementById(newId);
       clicked(newSquare);
-      console.log('LL');
     }
     // down
     if (id < 89) {
       const newId = squares[parseInt(id) + width].id;
       const newSquare = document.getElementById(newId);
       clicked(newSquare);
-      console.log('D');
     }
     // lower right
     if (id < 88 && !rightEdge) {
       const newId = squares[parseInt(id) + 1 + width].id;
       const newSquare = document.getElementById(newId);
       clicked(newSquare);
-      console.log('LR');
     }
   }, 10);
 };
+
+//flag add
+const addFlag = (square) => {
+  if (gameover) {
+    return;
+  }
+  if (!square.classList.contains('selected') && flag <= bombCount) {
+    if (square.classList.contains('flag')) {
+      square.classList.remove('flag');
+      square.innerHTML = '🚩';
+      flag++;
+      checkForWin();
+    } else {
+      square.classList.add('flag');
+      square.innerHTML = '';
+      flag--;
+    }
+  }
+};
+
+const gameOver = () => {
+  gameover = true;
+
+  squares.forEach((square) => {
+    if (square.classList.contains('bomb')) {
+      square.innerHTML = '💣';
+      square.classList.remove('bomb');
+      result.innerHTML = 'Game Over';
+      square.classList.add('selected');
+    }
+  });
+};
+
+const checkForWin = () => {
+  let match = 0;
+  squares.forEach((square) => {
+    if (
+      square.classList.contains('flag') &&
+      square.classList.contains('bomb')
+    ) {
+      match++;
+    }
+  });
+  if (match === bombCount) {
+    result.innerHTML = 'You Win';
+    gameover = true;
+  }
+};
+
+const result = document.createElement('h1');
+grid.append(result);

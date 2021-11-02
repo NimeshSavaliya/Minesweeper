@@ -6,28 +6,39 @@ html {
   background-color: beige;
 }
 
+div {
+  font-size: 25px;
+  text-align: center;
+  font-family: 'Roboto Mono', monospace;
+}
+
 .grid {
   margin: auto;
-  margin-top: 10em;
-  padding: 10px;
+  margin-top: 10rem;
+  padding: 8px;
   width: 465px;
   height: 465px;
   background-color: gainsboro;
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
+  border: #323232 2px solid;
 }
 
 .grid div {
   background-color: azure;
   width: 40px;
   height: 40px;
+  border: #323232 1px solid;
 }
 
 div.selected {
-  background-color: aquamarine;
+  background-color: rgb(214, 199, 199);
+  border: none;
 }
 
-div.bomb {
-  background-color: gray;
+h1 {
+  margin: auto;
+  margin-top: 3rem;
+  color: #323232;
 }
