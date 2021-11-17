@@ -21,12 +21,20 @@ for (let i = 0; i < width * width; i++) {
   grid.appendChild(square);
   squares.push(square);
 
-  square.addEventListener('click', () => clicked(square));
+  square.addEventListener('click', function (e) {
+    // e.preventDefault();
+    if (e.ctrlKey) {
+      console.log('falg');
+      addFlag(square);
+    } else {
+      clicked(square);
+    }
+  });
   //ctrl+click
-  square.oncontextmenu = function (e) {
-    e.preventDefault();
-    addFlag(square);
-  };
+  // square.oncontextmenu = function (e) {
+  //   e.preventDefault();
+  //   addFlag(square);
+  // };
 }
 
 for (let i = 0; i < squares.length; i++) {
@@ -152,25 +160,6 @@ const checksquare = (square) => {
   }, 10);
 };
 
-//flag add
-const addFlag = (square) => {
-  if (gameover) {
-    return;
-  }
-  if (!square.classList.contains('selected') && flag <= bombCount) {
-    if (square.classList.contains('flag')) {
-      square.classList.remove('flag');
-      square.innerHTML = '🚩';
-      flag++;
-      checkForWin();
-    } else {
-      square.classList.add('flag');
-      square.innerHTML = '';
-      flag--;
-    }
-  }
-};
-
 const gameOver = () => {
   gameover = true;
 
@@ -182,6 +171,26 @@ const gameOver = () => {
       square.classList.add('selected');
     }
   });
+};
+
+//flag add
+const addFlag = (square) => {
+  if (gameover) {
+    return;
+  }
+  if (!square.classList.contains('selected') && flag <= bombCount) {
+    if (square.classList.contains('flag')) {
+      console.log('in addFlag');
+      square.classList.remove('flag');
+      square.innerHTML = '';
+      flag++;
+      checkForWin();
+    } else {
+      square.classList.add('flag');
+      square.innerHTML = '🚩';
+      flag--;
+    }
+  }
 };
 
 const checkForWin = () => {
